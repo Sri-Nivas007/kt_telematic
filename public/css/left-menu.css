@@ -1,0 +1,57 @@
+/* General Reset */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styles */
+.left-sidebar {
+    width: 250px;
+    background-color: #343a40;
+    color: #ffffff;
+    overflow-y: auto;
+    padding-top: 20px;
+}
+
+.left-sidebar h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #f8f9fa;
+}
+
+.left-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.left-sidebar ul li {
+    padding: 10px 20px;
+}
+
+.left-sidebar ul li .menu-link {
+    color: #f8f9fa;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+    padding: 10px;
+    transition: background 0.3s;
+}
+
+.left-sidebar ul li .menu-link:hover {
+    background-color: #495057;
+}
+.main-header {
+    text-align: center; /* Centers the text horizontally */
+    margin-bottom: 10px; /* Adds space below the header */
+    font-size: 2em; /* Adjusts the font size */
+    font-weight: bold; /* Makes the text bold */
+    color: #343a40; /* Optional: Darker color for contrast */
+    
+  }
+  

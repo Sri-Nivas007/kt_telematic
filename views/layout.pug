@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    title Asset Management
+    link(rel="stylesheet", href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css")
+    link(rel="stylesheet", href="/css/left-menu.css") 
+    script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+    script(src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js")
+  body(style="margin: 0; padding: 0; height: 100vh; overflow: hidden; background-color: #f8f9fa; font-family: Arial, sans-serif;")
+    .container(style="display: flex; height: 100%;")
+      .left-sidebar(style="width: 250px; background-color: #343a40; color: #fff; overflow-y: auto; padding-top: 20px;")
+        h2(style="text-align: center; font-size: 1.5em; margin-bottom: 20px; color: #f8f9fa;") Asset Management
+        ul(style="list-style: none; padding: 0; margin: 0;")
+          li(style="padding: 10px 20px;")
+            a(href="/employee" class="menu-link") Employee Master
+          li(style="padding: 10px 20px;")
+            a(href="/assets" class="menu-link") Asset Master
+          li(style="padding: 10px 20px;")
+            a(href="/assetsCategory" class="menu-link") Asset Category Master
+          li(style="padding: 10px 20px;")
+            a(href="/stock-view" class="menu-link") Stock View
+          li(style="padding: 10px 20px;")
+            a(href="/issue-asset" class="menu-link") Issue Asset
+          li(style="padding: 10px 20px;")
+            a(href="/return-asset" class="menu-link") Return Asset
+          li(style="padding: 10px 20px;")
+            a(href="/scrap-asset" class="menu-link") Scrap Asset
+          li(style="padding: 10px 20px;")
+            a(href="/asset-history" class="menu-link") Asset History
+      
+      .main-content(style="flex-grow: 1; display: flex; flex-direction: column; height: 100%; overflow: auto; padding: 20px; background-color: #ffffff; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);")
+        h1(class="main-header") KT Telematic - Asset Tracker
+        block content  // Placeholder for page-specific content
+      
+      block scripts  // Placeholder for page-specific scripts

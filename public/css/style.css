@@ -1,0 +1,111 @@
+/* Ensure full height of the screen */
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Flexbox container to split carousel and login form */
+.split-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Carousel section - taking 60% of screen height */
+.carousel-container {
+    flex: 0 0 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login container */
+.login-container {
+    flex: 0 0 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+/* Login content with logo and form */
+.login-content {
+    width: 100%;
+    max-width: 550px;
+    padding: 50px;
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Ensures text is centered */
+}
+
+/* Logo styling */
+.logo {
+    max-width: 150px; /* Adjust logo size */
+    margin-bottom: 15px; /* Space between logo and title */
+}
+
+/* Title styling */
+h2.text-center {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px; /* Space between title and form */
+}
+
+/* Left align form labels */
+.form-group label {
+    text-align: left; /* Ensure label is aligned to the left */
+    display: block; /* Ensure labels are block-level elements */
+    margin-bottom: 10px; /* Increased space between label and input */
+    font-size: 18px; /* Larger font size for labels */
+    font-weight: bold; /* Make label text bold */
+    width: 100%; /* Ensure label takes up the full width */
+}
+
+/* Input styling - make inputs wider and taller */
+.form-control {
+    width: 100%; /* Full width of the form */
+    max-width: 100%; /* Ensures the input doesn't overflow */
+    padding: 15px; /* Increased padding for taller inputs */
+    font-size: 18px; /* Increased font size for better readability */
+    height: 50px; /* Increased height for input fields */
+    border-radius: 8px; /* Rounded corners for input */
+    margin-bottom: 20px; /* Increased space between inputs */
+    border: 2px solid #ccc; /* Border color and thickness */
+    transition: border-color 0.3s ease; /* Smooth transition for focus */
+}
+
+/* Input focus styling */
+.form-control:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none; /* Remove outline on focus */
+}
+
+/* Button styling */
+.btn-block {
+    margin-top: 20px;
+    padding: 15px; /* Larger button for consistency */
+    font-size: 18px; /* Button text size */
+    border-radius: 8px; /* Rounded corners for the button */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black !important; /* Make the icons black */
+    border-radius: 15%; /* Optional: to make the button circular */
+    padding: 15px; /* Optional: adjust the padding to make the button larger */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    color: black; /* Set the text color to black for "Previous" and "Next" */
+}
+
+/* Add this to your CSS or inline styles */

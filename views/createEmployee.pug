@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  link(rel="stylesheet" href="/css/create-employee.css")
+  h1 Add New Employee
+
+  // Form to add a new employee
+  form(id="addEmployeeForm" action='/employees' method='POST' enctype="multipart/form-data")
+    .form-group
+      label(for='name') Name
+      input#name.form-control(type='text' name='name' required)
+
+    .form-group
+      label(for='job_title') Job Title
+      input#job_title.form-control(type='text' name='job_title' required)
+
+    .form-group
+      label(for='status') Status
+      select#status.form-control(name='status')
+        option(value='true') Active
+        option(value='false') Inactive
+
+    button.btn.btn-primary(type='submit') Submit
+
+  // Container for rendering the employee list or status update
+  .table-container(style="flex-grow: 1; overflow: auto; margin-top: 20px;")
+    iframe#employeeIframe(style="width: 100%; height: 500px; border: none;")
+
+  script.
+    // Handle form submission via AJAX
+    $(document).ready(function() {
+      $('#addEmployeeForm').submit(function(event) {
+        event.preventDefault();  // Prevent the default form submission
+        
+        // Collect the form data
+        var formData = $(this).serialize();
+        
+        // Send the form data via AJAX to the server
+        $.ajax({
+          type: 'POST',
+          url: '/employees',
+          data: formData,
+          success: function(response) {
+            // On success, redirect to the employee list page
+            window.location.href = '/employee'; // Redirect after successful creation
+          },
+          error: function(error) {
+            console.log('Error creating employee:', error);
+            alert('There was an error creating the employee.');
+          }
+        });
+      });
+    });

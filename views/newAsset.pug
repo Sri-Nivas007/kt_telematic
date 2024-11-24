@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  h2 Add New Asset
+
+  form(action="/asset" method="POST")
+    .form-group
+      label(for="serial_number") Serial Number
+      input(type="text" name="serial_number" class="form-control" required placeholder="Enter Serial Number")
+
+    .form-group
+      label(for="make") Make
+      input(type="text" name="make" class="form-control" required placeholder="Enter Make")
+
+    .form-group
+      label(for="model") Model
+      input(type="text" name="model" class="form-control" required placeholder="Enter Model")
+
+    .form-group
+      label(for="description") description
+      input(type="text" name="description" class="form-control" required placeholder="Enter description")
+
+    .form-group
+      label(for="categoryId") Category
+      select(name="categoryId" id="categoryId" class="form-control" required)
+        option(value="") Select Category
+
+    .form-group
+      label(for="status") Status
+      select(name="status" class="form-control" required)
+        option(value="Available") Available
+        option(value="Unavailable") Unavailable
+
+    button(type="submit" class="btn btn-primary") Add Asset
+    a(href="/assets" class="btn btn-secondary ml-2") Cancel
+
+block scripts
+  script.
+    $(document).ready(function() {
+        // Fetch categories via AJAX
+        $.ajax({
+            url: '/categories', // Ensure this matches the backend route
+            method: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    const categories = response.data;
+                    const categoryDropdown = $('#categoryId');
+                    
+                    // Populate dropdown with categories
+                    categories.forEach(category => {
+                        categoryDropdown.append(
+                            $('<option>', {
+                                value: category.id,
+                                text: category.name
+                            })
+                        );
+                    });
+                } else {
+                    alert('Failed to fetch categories');
+                }
+            },
+            error: function(err) {
+                console.error('Error while fetching categories:', err);
+                alert('Error while fetching categories');
+            }
+        });
+    });

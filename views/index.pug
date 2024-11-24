@@ -1,0 +1,58 @@
+doctype html
+html(lang="en")
+  head
+    title Split Layout - Carousel and Login
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/style.css")
+
+  body
+    .split-container
+      // Left side: Carousel
+      .carousel-container
+        .carousel.slide(id="carouselExample", data-ride="carousel")
+          ol.carousel-indicators
+            li(data-target="#carouselExample", data-slide-to="0", class="active")
+            li(data-target="#carouselExample", data-slide-to="1")
+            li(data-target="#carouselExample", data-slide-to="2")
+          .carousel-inner
+            .carousel-item.active
+              img.d-block.w-100(src="images/b-6.png", alt="Asset 1")
+            .carousel-item
+              img.d-block.w-100(src="images/b-2.png", alt="Asset 2")
+            .carousel-item
+              img.d-block.w-100(src="images/b-3.png", alt="Asset 2")
+            .carousel-item
+              img.d-block.w-100(src="images/b-4.png", alt="Asset 2")
+            .carousel-item
+              img.d-block.w-100(src="images/b-5.png", alt="Asset 2")
+            .carousel-item
+              img.d-block.w-100(src="images/b-1.png", alt="Asset 2")
+    
+          a.carousel-control-prev(href="#carouselExample", role="button", data-slide="prev")
+            span.carousel-control-prev-icon(aria-hidden="true")
+            span.sr-only Previous
+          a.carousel-control-next(href="#carouselExample", role="button", data-slide="next")
+            span.carousel-control-next-icon(aria-hidden="true")
+            span.sr-only Next
+
+      // Right side: Login Form
+      .login-container
+        .login-content
+          // Centered Logo and Title
+          img(src="images/logo.svg", alt="Asset Tracker Logo", class="logo img-fluid mb-3")
+          h2.text-center.mb-4 Asset Tracker
+          
+          form(action="/login", method="POST")
+            .form-group
+              label(for="username") Username
+              input#username.form-control(type="text", name="username", required=true)
+            .form-group
+              label(for="password") Password
+              input#password.form-control(type="password", name="password", required=true)
+            button.btn.btn-primary.btn-block(type="submit") Login
+
+    script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")

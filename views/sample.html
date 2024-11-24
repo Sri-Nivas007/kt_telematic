@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        />
+        <link rel="stylesheet" href="../public/styles/layout.css" />
+        <!-- Your custom styles -->
+        <title>#{title}</title>
+    </head>
+    <body>
+        <header class="bg-primary text-white">
+            <div class="container">
+                <h1>Welcome to Your Company</h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Employees</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Assets</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Stock View</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Issue Asset</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Return Asset</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Scrap Asset</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Asset History</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-md-3">
+                    <h2>Sidebar</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li class="list-group-item"><a href="#">Profile</a></li>
+                        <li class="list-group-item">
+                            <a href="#">Settings</a>
+                        </li>
+                        <li class="list-group-item"><a href="#">Logout</a></li>
+                    </ul>
+                </aside>
+                <main class="col-md-9">
+                    <block content></block>
+                </main>
+            </div>
+        </div>
+
+        <footer class="bg-dark text-white">
+            <div class="container">
+                <p class="text-center">Copyright &copy; Your Company Name</p>
+            </div>
+        </footer>
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

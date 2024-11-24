@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  link(rel="stylesheet" href="/css/create-employee.css")
+  h1 Edit Employee
+
+  form(action=`/employees/${employee.id}/update` method="POST")
+    .form-group
+      label(for="name") Name
+      input#name.form-control(type="text" name="name" value=employee.name required)
+    .form-group
+      label(for="job_title") Job Title
+      input#job_title.form-control(type="text" name="job_title" value=employee.job_title required)
+    .form-group
+      label(for="status") Status
+      select#status.form-control(name="status" required)
+        option(value="true" selected=employee.status === true) Active
+        option(value="false" selected=employee.status === false) Inactive
+    button.btn.btn-primary(type="submit") Save Changes
