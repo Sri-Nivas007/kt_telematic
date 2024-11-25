@@ -10,7 +10,6 @@ export default (sequelize, DataTypes) => {
             allowNull: false,
             unique: true,
         },
-
         make: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -32,11 +31,23 @@ export default (sequelize, DataTypes) => {
             },
         },
         status: {
-            type: DataTypes.ENUM("Available", "Repair","In use","Scrap"), // Allowed values
+            type: DataTypes.ENUM("Available", "Repair", "Issued", "Scrapped"),
             allowNull: false,
-            defaultValue: "Available", // Default value (Optional)
+            defaultValue: "Available",
+        },
+        branch: {
+            type: DataTypes.ENUM("chennai", "coimbatore", "bangalore"),
+            allowNull: false,
+        },
+        price: {
+            // Add the price field
+            type: DataTypes.FLOAT,
+            allowNull: false,
+            defaultValue: 0.0,
         },
     });
+
+    
 
     return Asset;
 };

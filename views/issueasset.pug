@@ -1,0 +1,138 @@
+extends layout
+
+block content
+  h2 Issue Asset
+
+  // Form to issue asset
+  form(action="/issue-asset" method="POST")
+    .form-group
+      label(for="assetId") Asset
+      select(name="assetId" id="assetId" class="form-control" required)
+        option(value="") Select Asset
+        each asset in assets
+          option(value=asset.id)= asset.serial_number + " - " + asset.model + " (" + asset.status + ")"
+
+    .form-group
+      label(for="employeeId") Employee
+      select(name="employeeId" id="employeeId" class="form-control" required)
+        option(value="") Select Employee
+        each employee in employees
+          option(value=employee.id)= employee.name
+
+    .form-group
+      label(for="issueDate") Issue Date
+      input(type="date" name="issueDate" id="issueDate" class="form-control" required)
+
+    .form-group
+      label(for="status") Status
+      select(name="status" id="status" class="form-control" required)
+        option(value="Issued") Issued
+        option(value="Returned") Returned
+
+    button(type="submit" class="btn btn-primary") Issue Asset
+    a(href="/assets" class="btn btn-secondary ml-2") Cancel
+
+  h3 Issued Asset List
+  table(id="issued-assets" class="display")
+    thead
+      tr
+        th Asset ID
+        th Employee Name
+        th Issue Date
+        th Return Date
+        th Status
+    tbody
+      // Empty body, will be populated by JavaScript
+
+block scripts
+  script.
+    $(document).ready(function() {
+        // Fetch available assets via AJAX
+        //- $.ajax({
+        //-     url: '/assets',  // Fetch only available assets
+        //-     method: 'GET',
+        //-     success: function(response) {
+        //-         if (response.success) {
+        //-             const assets = response.data;
+        //-             const assetDropdown = $('#assetId');
+
+        //-             // Populate asset dropdown
+        //-             assets.forEach(asset => {
+        //-                 assetDropdown.append(
+        //-                     $('<option>', {
+        //-                         value: asset.id,
+        //-                         text: asset.serial_number + " - " + asset.model + " (" + asset.status + ")"
+        //-                     })
+        //-                 );
+        //-             });
+        //-         } else {
+        //-             alert('Failed to fetch assetjjjs');
+        //-         }
+        //-     },
+        //-     error: function(err) {
+        //-         console.error('Error while fetching assets:', err);
+        //-         alert('Error while fetching assets');
+        //-     }
+        //- });
+
+        //- // Fetch employees via AJAX
+        //- $.ajax({
+        //-     url: '/allemployees',  // Assuming there's an endpoint for employees
+        //-     method: 'GET',
+        //-     success: function(response) {
+        //-         if (response.success) {
+        //-             const employees = response.data;
+        //-             const employeeDropdown = $('#employeeId');
+
+        //-             // Populate employee dropdown
+        //-             employees.forEach(employee => {
+        //-                 employeeDropdown.append(
+        //-                     $('<option>', {
+        //-                         value: employee.id,
+        //-                         text: employee.name
+        //-                     })
+        //-                 );
+        //-             });
+        //-         } else {
+        //-             alert('Failed to fetch employddees');
+        //-         }
+        //-     },
+        //-     error: function(err) {
+        //-         console.error('Error while fetching employees:', err);
+        //-         alert('Error while fetching employejjjes');
+        //-     }
+        //- });
+
+        // Fetch issued assets and populate the DataTable
+        $.ajax({
+            url: '/issued/asset',  // The endpoint to fetch issued assets
+            method: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    const issuedAssets = response.data;
+                    const tableBody = $('#issued-assets tbody');
+                    
+                    issuedAssets.forEach(item => {
+                        tableBody.append(
+                            `<tr>
+                                <td>${item.asset.serial_number}</td>
+                                <td>${item.employee.name}</td>
+                                <td>${item.issue_date}</td>
+                                <td>${item.return_date || 'N/A'}</td>
+                                <td>${item.status}</td>
+                            </tr>`
+                        );
+                    });
+
+                    // Initialize DataTable
+                    $('#issued-assets').DataTable();
+                } else {
+                    alert('Failed to fetch issued assets');
+                }
+            },
+            error: function(err) {
+                console.error('Error while fetching issued assets:', err);
+                alert('Error while fetching issued assets');
+            }
+        });
+    });

@@ -1,0 +1,87 @@
+extends layout
+
+block content
+  h2 Return Asset
+
+  // Return Asset Form
+  form(action="/return-asset" method="POST")
+    .form-group
+      label(for="assetId") Select Issued Asset
+      select(name="id" id="assetId" class="form-control" required)
+        option(value="") Select Issued Asset
+        each issuedAsset in issuedAssets
+          option(value=issuedAsset.id)= issuedAsset.asset.serial_number + " (" + issuedAsset.employee.name + ")"
+
+    .form-group
+      label(for="returnReason") Reason for Return
+      select(name="returnReason" id="returnReason" class="form-control" required)
+        option(value="") Select Reason
+        each reason in returnReasons
+          option(value=reason)= reason
+
+    button(type="submit" class="btn btn-primary") Return Asset
+    a(href="/assets" class="btn btn-secondary ml-2") Cancel
+
+  // Table for Returned Assets
+  h3.mt-5 Returned Assets
+  table#returnedAssetsTable.table.table-striped
+    thead
+      tr
+        th Asset Serial Number
+        th Employee Name
+        th Return Date
+        th Return Reason
+    tbody
+      // Placeholder for dynamically loaded data
+
+block scripts
+  // Include jQuery and DataTables library
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+  script(src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js")
+  link(rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css")
+
+  // DataTable initialization with AJAX
+  script.
+    $(document).ready(function () {
+        // Initialize DataTable with server-side processing
+        const table = $('#returnedAssetsTable').DataTable({
+            ajax: {
+                url: '/returned-assets', // API endpoint
+                type: 'GET', // HTTP method
+                dataSrc: function (json) {
+                    if (json.success) {
+                        return json.data.map(asset => {
+                            return [
+                                asset.asset.serial_number,
+                                asset.employee.name,
+                                new Date(asset.return_date).toLocaleString(), // Format return date
+                                asset.return_reason
+                            ];
+                        });
+                    } else {
+                        console.error('Failed to fetch data:', json.error);
+                        alert("Error fetching returned assets data.");
+                        return [];
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                    alert('Failed to load returned assets data.');
+                }
+            },
+            columns: [
+                { title: "Asset Serial Number" },
+                { title: "Employee Name" },
+                { title: "Return Date" },
+                { title: "Return Reason" }
+            ],
+            pageLength: 5,
+            lengthMenu: [5, 10, 25, 50],
+            order: [[2, 'desc']], // Order by return date descending
+        });
+
+        // Optional: Manually reload data when needed
+        $('#reloadDataButton').on('click', function () {
+            table.ajax.reload(null, false); // Reload without resetting pagination
+        });
+    });

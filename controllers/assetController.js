@@ -11,8 +11,8 @@ export const getAssets = async (req, res) => {
             include: [
                 {
                     model: db.AssetCategory,
-                    as: 'category', // Ensure the alias matches what you're using
-                    attributes: ['id', 'name'], // Only include 'id' and 'name' from the category
+                    as: "category", // Ensure the alias matches what you're using
+                    attributes: ["id", "name"], // Only include 'id' and 'name' from the category
                 },
             ],
         });
@@ -20,13 +20,13 @@ export const getAssets = async (req, res) => {
         // Fetching categories for the dropdown (optional)
         const categories = await db.AssetCategory.findAll();
 
-        res.render('assets/index', {
+        res.render("assets/index", {
             assets,
             categories,
         });
     } catch (error) {
-        console.error('Error fetching assets:', error);
-        res.status(500).send('Error fetching assets');
+        console.error("Error fetching assets:", error);
+        res.status(500).send("Error fetching assets");
     }
 };
 
@@ -53,12 +53,45 @@ export const getAssetById = async (req, res) => {
 export const createAsset = async (req, res) => {
     console.log("req", req.body);
     try {
-        const { serial_number, make, model, description, categoryId, status } =
-            req.body;
+        const {
+            serial_number,
+            make,
+            model,
+            description,
+            categoryId,
+            status,
+            branch,
+            price, // Add price to destructured fields
+        } = req.body;
 
         // Validation (basic checks)
-        if (!serial_number || !make || !model || !categoryId) {
+        if (
+            !serial_number ||
+            !make ||
+            !model ||
+            !categoryId ||
+            !branch ||
+            !status ||
+            price === undefined // Ensure price is provided
+        ) {
             return res.status(400).json({ error: "Missing required fields" });
+        }
+
+        // Validate ENUM values for branch and status
+        const validBranches = ["chennai", "coimbatore", "bangalore"];
+        const validStatuses = ["Available", "Unavailable"];
+
+        if (!validBranches.includes(branch)) {
+            return res.status(400).json({ error: "Invalid branch value" });
+        }
+
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ error: "Invalid status value" });
+        }
+
+        // Validate price (ensure it's a positive number)
+        if (isNaN(price) || price < 0) {
+            return res.status(400).json({ error: "Invalid price value" });
         }
 
         // Create the asset
@@ -67,11 +100,16 @@ export const createAsset = async (req, res) => {
             make,
             model,
             description,
-            categoryId, // Include categoryId
+            categoryId,
             status,
+            branch,
+            price, // Include price in the creation
         });
+
+        // Redirect to the assets page or send a response
         res.redirect("/assets");
-        //   res.status(201).json({ asset: newAsset });
+        // Alternatively, you can return the asset data if you're using JSON response
+        // res.status(201).json({ asset: newAsset });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to create asset" });
@@ -125,3 +163,54 @@ export const deleteAsset = async (req, res) => {
         res.status(500).json({ error: "Failed to delete asset" });
     }
 };
+
+export const stockview = async (req, res) => {
+    try {
+        console.log("Fetching stock data...");
+
+        // Fetch stock data, including asset price, stock count, and branch (as an ENUM)
+        const stockData = await db.Asset.findAll({
+            attributes: [
+                "branch", // The branch is now an ENUM in the Asset table
+                "status",
+                [
+                    db.sequelize.fn("COUNT", db.sequelize.col("id")),
+                    "stockCount",
+                ],
+                [
+                    db.sequelize.fn("SUM", db.sequelize.col("price")),
+                    "totalValue",
+                ], // SUM for total value
+                [
+                    db.sequelize.fn("AVG", db.sequelize.col("price")),
+                    "averagePrice",
+                ], // Ensure averagePrice is being calculated
+            ],
+            group: ["branch", "status"], // Group by branch and status
+        });
+
+        // Branch name mapping based on ENUM values
+        const branchEnum = {
+            chennai: "Chennai",
+            coimbatore: "Coimbatore",
+            bangalore: "Bangalore",
+        };
+
+        // Format the stock data by replacing the branch ENUM with branch name
+        const formattedStockData = stockData.map((stock) => ({
+            ...stock.dataValues,
+            branchName: branchEnum[stock.branch] || "Unknown Branch", // Map ENUM value to branch name
+            price: stock.totalValue || 0, // Use total value if price is undefined
+            averagePrice: stock.averagePrice || 0, // Handle undefined average price gracefully
+        }));
+
+        // Send the response with stock data to the view
+        res.json({
+            stocks: formattedStockData,
+        });
+    } catch (error) {
+        console.error("Error fetching stock data:", error);
+        res.status(500).json({ error: "Failed to fetch stock data" });
+    }
+};
+

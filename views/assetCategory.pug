@@ -53,25 +53,25 @@ block scripts
   script.
     $(document).ready(function() {
       $('#categoryTable').DataTable({
-        paging: true,       // Enable pagination
-        searching: true,    // Enable search functionality
-        ordering: true,     // Enable sorting
-        info: true,         // Show information about number of records
-        lengthMenu: [5, 10, 25, 50], // Set options for records per page
+        paging: true,      
+        searching: true,   
+        ordering: true,    
+        info: true,        
+        lengthMenu: [5, 10, 25, 50],
         language: {
           search: "_INPUT_",
           searchPlaceholder: "Search by name"
         }
       });
 
-      // Show the delete modal when delete button is clicked
+      
       $(document).on("click", ".delete-btn", function() {
           const categoryId = $(this).data("id");
-          $("#confirmDelete").data("category-id", categoryId); // Store the ID for confirmation
+          $("#confirmDelete").data("category-id", categoryId);
           showModal(); // Show the modal
       });
 
-      // Handle the delete confirmation
+     
       $("#confirmDelete").on("click", function() {
           const categoryId = $(this).data("category-id");
 
@@ -80,8 +80,8 @@ block scripts
               type: "DELETE",
               success: function(response) {
                   console.log(response.message);
-                  closeModal(); // Close the modal after deletion
-                  location.reload(); // Reload the page to reflect the changes
+                  closeModal(); 
+                  location.reload();
               },
               error: function(err) {
                   console.error(err.responseJSON.error);

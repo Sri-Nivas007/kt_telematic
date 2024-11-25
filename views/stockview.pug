@@ -1,0 +1,68 @@
+extends layout
+
+block content
+  h2 Stock View
+
+  table#stockTable.table.table-bordered
+    thead
+      tr
+        th Branch
+        th Status
+        th Stock Count
+        th Total Value
+        th Average Price
+    tbody
+      // Data will be dynamically added using DataTables
+
+  .footer
+    h4 Total Value of All Stock: $0 // Placeholder to be updated by JS
+
+block scripts
+  script.
+    $(document).ready(function () {
+      // Initialize DataTable
+      const stockTable = $("#stockTable").DataTable({
+        columns: [
+          { title: "Branch" },
+          { title: "Status" },
+          { title: "Stock Count" },
+          { title: "Total Value" },
+          { title: "Average Price" },
+        ],
+      });
+
+      // Fetch stock data
+   $.ajax({
+    url: "/stockviews",
+    method: "GET",
+    success: function (response) {
+        console.log("AJAX Response:", response); // Log the full response
+        if (response && response.stocks) {
+            const stockData = response.stocks;
+            console.log("Stocks Data:", stockData); // Log the stocks array
+            let totalValue = 0;
+
+            stockData.forEach((stock) => {
+                stockTable.row.add([
+                    stock.branchName,
+                    stock.status,
+                    stock.stockCount,
+                    `$${stock.totalValue.toFixed(2)}`,
+                    `$${stock.averagePrice.toFixed(2)}`
+                ]).draw();
+
+                totalValue += stock.totalValue;
+            });
+
+            $(".footer h4").text(`Total Value of All Stock: $${totalValue.toFixed(2)}`);
+        } else {
+            alert("No stock data found in response.");
+        }
+    },
+    error: function (error) {
+        console.error("AJAX Error:", error);
+        alert("Failed to fetch stock data.");
+    },
+    });
+
+    });

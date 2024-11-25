@@ -22,13 +22,13 @@ html(lang="en")
             .carousel-item
               img.d-block.w-100(src="images/b-2.png", alt="Asset 2")
             .carousel-item
-              img.d-block.w-100(src="images/b-3.png", alt="Asset 2")
+              img.d-block.w-100(src="images/b-3.png", alt="Asset 3")
             .carousel-item
-              img.d-block.w-100(src="images/b-4.png", alt="Asset 2")
+              img.d-block.w-100(src="images/b-4.png", alt="Asset 4")
             .carousel-item
-              img.d-block.w-100(src="images/b-5.png", alt="Asset 2")
+              img.d-block.w-100(src="images/b-5.png", alt="Asset 5")
             .carousel-item
-              img.d-block.w-100(src="images/b-1.png", alt="Asset 2")
+              img.d-block.w-100(src="images/b-1.png", alt="Asset 6")
     
           a.carousel-control-prev(href="#carouselExample", role="button", data-slide="prev")
             span.carousel-control-prev-icon(aria-hidden="true")
@@ -44,15 +44,19 @@ html(lang="en")
           img(src="images/logo.svg", alt="Asset Tracker Logo", class="logo img-fluid mb-3")
           h2.text-center.mb-4 Asset Tracker
           
-          form(action="/login", method="POST")
+          form(action="/employee", method="GET")
             .form-group
               label(for="username") Username
               input#username.form-control(type="text", name="username", required=true)
             .form-group
               label(for="password") Password
               input#password.form-control(type="password", name="password", required=true)
-            button.btn.btn-primary.btn-block(type="submit") Login
+            button.btn.btn-primary.btn-block(type="button" onclick="redirectToEmployee()") Login
 
     script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js")
+    script.
+      function redirectToEmployee() {
+        window.location.href = "/employee";
+      }

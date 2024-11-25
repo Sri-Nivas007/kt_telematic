@@ -4,6 +4,7 @@ import {
     deleteAsset,
     getAssetById,
     getAssets,
+    stockview,
     updateAsset,
 } from "../controllers/assetController.js";
 
@@ -26,5 +27,7 @@ router.put("/asset/:id/update", updateAsset);
 
 // Delete an asset by ID
 router.delete("/asset/:id/delete", deleteAsset);
+
+router.get("/stockviews", stockview);
 
 export default router;

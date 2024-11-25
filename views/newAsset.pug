@@ -17,13 +17,25 @@ block content
       input(type="text" name="model" class="form-control" required placeholder="Enter Model")
 
     .form-group
-      label(for="description") description
-      input(type="text" name="description" class="form-control" required placeholder="Enter description")
+      label(for="description") Description
+      input(type="text" name="description" class="form-control" placeholder="Enter Description")
+
+    .form-group
+      label(for="price") Price
+      input(type="number" name="price" class="form-control" required min="0" step="0.01" placeholder="Enter Price")
 
     .form-group
       label(for="categoryId") Category
       select(name="categoryId" id="categoryId" class="form-control" required)
         option(value="") Select Category
+
+    .form-group
+      label(for="branch") Branch
+      select(name="branch" id="branch" class="form-control" required)
+        option(value="") Select Branch
+        option(value="chennai") Chennai
+        option(value="coimbatore") Coimbatore
+        option(value="bangalore") Bangalore
 
     .form-group
       label(for="status") Status
@@ -39,14 +51,14 @@ block scripts
     $(document).ready(function() {
         // Fetch categories via AJAX
         $.ajax({
-            url: '/categories', // Ensure this matches the backend route
+            url: '/categories', // Ensure this matches the backend route for categories
             method: 'GET',
             success: function(response) {
                 if (response.success) {
                     const categories = response.data;
                     const categoryDropdown = $('#categoryId');
                     
-                    // Populate dropdown with categories
+                    // Populate category dropdown with categories
                     categories.forEach(category => {
                         categoryDropdown.append(
                             $('<option>', {

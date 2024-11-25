@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1 Asset History
+  table
+    thead
+      tr
+        th Serial Number
+        th Model
+        th Scrap Reason
+        th Scrapped At
+        th Issued To (Employee)
+        th Issue Date
+        th Returned By (Employee)
+        th Return Date
+    tbody
+      // Loop through each asset and its associated history
+      each asset in assets
+        tr
+          td= asset.serial_number
+          td= asset.model
+
+          // Check if scrapHistory exists and display accordingly
+          td= asset['scrapHistory.scrap_reason'] ? asset['scrapHistory.scrap_reason'] : 'N/A'
+          td= asset['scrapHistory.scrapped_at'] ? asset['scrapHistory.scrapped_at'] : 'N/A'
+
+          // Handle Issued Stocks (Check if employee_id is present)
+          td= asset['issuedStocks.employee.name'] ? asset['issuedStocks.employee.name'] : 'N/A'
+          td= asset['issuedStocks.issue_date'] ? asset['issuedStocks.issue_date'] : 'N/A'
+
+          // Handle Returned Assets (Check if employee_id is present)
+          td= asset['returnedAssets.employee.name'] ? asset['returnedAssets.employee.name'] : 'N/A'
+          td= asset['returnedAssets.return_date'] ? asset['returnedAssets.return_date'] : 'N/A'

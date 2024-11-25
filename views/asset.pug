@@ -11,6 +11,8 @@ block content
     input(type="text" name="serial_number" placeholder="Search by Serial Number")
     input(type="text" name="make" placeholder="Search by Make")
     input(type="text" name="model" placeholder="Search by Model")
+    input(type="number" name="min_price" placeholder="Min Price")
+    input(type="number" name="max_price" placeholder="Max Price") 
     
     select(name="categoryType")
       option(value="") Select Category
@@ -21,7 +23,17 @@ block content
           option(value=category.id)= category.name
       else
         option(value="") No Categories Available
-      
+
+    select(name="branchId")
+      option(value="") Select Branch
+      // Check if branches exist
+      if branches && branches.length
+        // Loop through the branches to generate the options dynamically
+        each branch in branches
+          option(value=branch.id)= branch.name
+      else
+        option(value="") No Branches Available
+
     button(type="submit") Apply Filters
 
   table#assetTable.table.table-striped
@@ -33,6 +45,8 @@ block content
         th Description
         th Category
         th Status
+        th Branch
+        th Price 
         th Actions
     tbody
       if assets && assets.length
@@ -44,12 +58,14 @@ block content
             td= asset.description || 'No Description'
             td= asset.category ? asset.category.name : 'No Category'
             td= asset.status
+            td= asset.branch ? asset.branch : 'No Branch'
+            td= asset.price ? `$${asset.price.toFixed(2)}` : 'N/A' 
             td
               a(href=`/asset/${asset.id}/edit` class="btn btn-warning btn-sm") Edit
               button(type="button" class="btn btn-danger btn-sm delete-btn" data-id=`${asset.id}`) Delete
       else
         tr
-          td(colspan="7") No assets found.
+          td(colspan="9") No assets found.
 
   // Modal for confirmation
   .modal#deleteModal
@@ -103,12 +119,12 @@ block scripts
         });
     });
 
-    // Function to show the modal
+    
     function showModal() {
         document.getElementById('deleteModal').style.display = 'block';
     }
 
-    // Function to close the modal
+   
     function closeModal() {
         document.getElementById('deleteModal').style.display = 'none';
     }

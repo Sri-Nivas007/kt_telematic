@@ -1,0 +1,114 @@
+extends layout
+
+block content
+  h2 Scrap Asset
+
+  // Scrap Asset Form
+  form(id="scrapAssetForm")
+    .form-group
+      label(for="assetId") Select Asset to Scrap
+      select(name="assetId" id="assetId" class="form-control" required)
+        option(value="") Select Asset
+        // Dynamically populate this dropdown from activeAssets
+        each asset in activeAssets
+          option(value=asset.id) #{asset.serial_number} (#{asset.model})
+
+    .form-group
+      label(for="scrapReason") Reason for Scrapping
+      textarea(name="scrapReason" id="scrapReason" class="form-control" placeholder="Enter reason" required)
+
+    button(type="submit" class="btn btn-danger") Mark as Scrapped
+
+  h3.mt-5 Active Assets
+  table#activeAssetsTable.table.table-striped
+    thead
+      tr
+        th Asset Serial Number
+        th Model
+        th Status
+    tbody
+      each asset in activeAssets
+        tr
+          td #{asset.serial_number}
+          td #{asset.model}
+          td #{asset.status}
+
+  // Scrapped Assets Table
+  h3.mt-5 Scrapped Assets (Reports)
+  table#scrappedAssetsTable.table.table-striped
+    thead
+      tr
+        th Asset Serial Number
+        th Model
+        th Scrap Reason
+    tbody
+      each asset in scrappedAssets
+        tr
+          td #{asset.serial_number}
+          td #{asset.model}
+          td #{asset.scrap_reason}
+
+block scripts
+  // Include jQuery and DataTables
+  script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+  script(src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js")
+  link(rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css")
+
+  // Initialize DataTables for both Active and Scrapped Assets
+  script.
+    $(document).ready(function () {
+        // Initialize DataTable for Active Assets
+        $('#activeAssetsTable').DataTable({
+            paging: true,  // Enable pagination
+            searching: true,  // Enable search functionality
+            ordering: true,  // Enable sorting
+            info: true  // Display table info (e.g., showing rows x to y of z)
+        });
+
+        // Initialize DataTable for Scrapped Assets
+        $('#scrappedAssetsTable').DataTable({
+            paging: true,  // Enable pagination
+            searching: true,  // Enable search functionality
+            ordering: true,  // Enable sorting
+            info: true  // Display table info (e.g., showing rows x to y of z)
+        });
+
+        // Handle the form submission for scrapping an asset
+        $('#scrapAssetForm').on('submit', function (e) {
+            e.preventDefault();
+            
+            // Collect the values from the form
+            const assetId = $('#assetId').val();
+            const scrapReason = $('#scrapReason').val();
+
+            // Create a JSON object with the form data
+            const formData = {
+                assetId: assetId,
+                scrapReason: scrapReason
+            };
+
+            // Send the form data to the backend via AJAX
+            $.ajax({
+                url: '/scrap',  // Backend route for scrapping assets
+                method: 'POST',
+               
+                data:formData,  // Send the form data as a JSON string
+                success: function (response) {
+                    console.log("Response:", response);
+                    if (response.success) {
+                        alert('Asset marked as scrapped successfully.');
+                        // Reload the DataTables to reflect the changes
+                        $('#activeAssetsTable').DataTable().ajax.reload();
+                        $('#scrappedAssetsTable').DataTable().ajax.reload();
+                        $('#scrapAssetForm')[0].reset();  // Reset the form
+                    } else {
+                        alert('Error scrapping asset: ' + response.error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log('Failed to scrap asset:', error);
+                    alert('Error: ' + error);
+                }
+            });
+        });
+    });
